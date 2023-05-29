@@ -22,7 +22,7 @@ jobs:
       - name: Do work with a secret
         run: ./workRequiringASecret.sh
         env:
-          A_SECRET: ${{ secrets.userName.USERNAME }}
+          A_SECRET: ${{ secrets.USERNAME }}
 
       - name: Run only for pulls
         if: ${{ github.event_name == 'pull_request' }}

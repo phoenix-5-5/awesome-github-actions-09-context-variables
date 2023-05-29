@@ -1,7 +1,7 @@
 name: contexts-example
 on:
   push:
-  pull:
+  pull_request:
 jobs:
   use-contexts:
     strategy:
@@ -18,5 +18,5 @@ jobs:
         env:
           A_SECRET: ${{ secrets.A_SECRET }}
       - name: Run only for pulls
-        if: ${{ github.event == "pull" }}
+        if: ${{ github.event == "pull_request" }}
         run: echo "Triggered by a pull request"          

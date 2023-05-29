@@ -13,6 +13,7 @@ jobs:
         greeting: [Hello, Howdy, Hey]
 
     steps:
+      - uses: actions/checkout@v2
       - name: Print greeting
         run: echo ${{ matrix.greeting }}
         env:

@@ -1,0 +1,14 @@
+
+{
+  "name": "@TestGitHubPackagesRML/testnpm",
+  "version": "${SECRET_VAR_NAME}",
+  "description": "This package is used to test npm for use with GitHub Packages.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TestGitHubPackagesRML/TestNpm.git"
+  },
+  "author": "",

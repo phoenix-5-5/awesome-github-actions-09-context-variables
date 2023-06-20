@@ -18,15 +18,22 @@ jobs:
         run: echo ${{ matrix.greeting }}
         env:
           GREETING: ${{ matrix.greeting }}
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
 
-      - name: Do work with a secret
-        env:
-          A_SECRET: ${{ secrets.USERNAME }}
-          SECRET_VAR_NAME: ${{ secrets.NEW_SECRET_1 }}
+      - name: Set package version
+        run: echo "::set-env name=PKG_VERSION::${{ env.MAIN_VER }}.${{ github.run_number }}.$(date +"%y%m%d")"
+
+
+      - name: Publish package
         run: |
-             sed -i 's/${SECRET_VAR_NAME}/${{ env.SECRET_VAR_NAME }}/g' package.json
-             npm publish
+          sed -i 's/${PKG_VERSION}/${{ env.PKG_VERSION }}/g' package.json
+          npm publish
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Run only for pulls
-        if: ${{ github.event_name == 'pull_request' }}
-        run: echo "Triggered by a pull request"
+
+
+

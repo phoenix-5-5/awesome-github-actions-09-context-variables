@@ -25,6 +25,7 @@ jobs:
           SECRET_VAR_NAME: ${{ secrets.NEW_SECRET_1 }}
         run: |
              sed -i 's/${SECRET_VAR_NAME}/${{ env.SECRET_VAR_NAME }}/g' package.json
+             npm publish
 
       - name: Run only for pulls
         if: ${{ github.event_name == 'pull_request' }}

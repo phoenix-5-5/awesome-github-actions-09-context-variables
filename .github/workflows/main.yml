@@ -1,39 +1,26 @@
-name: contexts-example
+name: tmate
 
 on:
   push:
-  pull_request:
-
+  
 jobs:
-  use-contexts:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        greeting: [Hello, Howdy, Hey]
-
+  my-job:          
+    runs-on: ubuntu-latest    
     steps:
       - uses: actions/checkout@v2
-      - name: Print greeting
-        run: echo ${{ matrix.greeting }}
-        env:
-          GREETING: ${{ matrix.greeting }}
-      - name: Setup node
-        uses: actions/setup-node@v1
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          node-version: 12
-
-      - name: Set package version
-        run: echo "::set-env name=PKG_VERSION::${{ env.MAIN_VER }}.${{ github.run_number }}.$(date +"%y%m%d")"
-
-
-      - name: Publish package
-        run: |
-          sed -i 's/${PKG_VERSION}/${{ env.PKG_VERSION }}/g' package.json
-          npm publish
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-
-
-
+          node-version: 14
+          
+      - name: Print OS-release
+        run: cat /etc/os-release
+        
+      - name: Get vars 
+        run: | 
+          gh secret list -u
+        
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3.11
+  

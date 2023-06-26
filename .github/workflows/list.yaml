@@ -10,8 +10,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: Show secrets
-        run: secrets
-        
       - name: Show env vars
         run: env

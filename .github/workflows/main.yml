@@ -1,29 +1,31 @@
-name: contexts-example
+name: tmate
 
 on:
   push:
-  pull_request:
-
+  
 jobs:
-  use-contexts:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        greeting: [Hello, Howdy, Hey]
-
+  my-job:          
+    runs-on: ubuntu-latest    
     steps:
       - uses: actions/checkout@v2
-      - name: Print greeting
-        run: echo ${{ matrix.greeting }}
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v2
+#         with:
+#           node-version: 14
+          
+      - name: Print OS-release
+        run: cat /etc/os-release
+        
+      - name: Get vars
         env:
-          GREETING: ${{ matrix.greeting }}
-
-      - name: Do work with a secret
-        run: ./workRequiringASecret.sh
-        env:
-          A_SECRET: ${{ secrets.USERNAME }}
-
-      - name: Run only for pulls
-        if: ${{ github.event_name == 'pull_request' }}
-        run: echo "Triggered by a pull request"
+          GH_TOKEN: ${{ github.token }}
+        run: | 
+          gh api \
+          -H "Accept: application/vnd.github+json" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          /user/codespaces/secrets
+        
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3.11
+  
